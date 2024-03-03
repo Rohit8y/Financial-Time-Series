@@ -1,9 +1,9 @@
 import argparse
 
-from utils.preprocessing import load_df
+from utils.preprocessing import load_df, get_train_eval_df
 
 parser = argparse.ArgumentParser(description="M3C time series forecasting")
-parser.add_argument('--freq', default=2, type=int,
+parser.add_argument('--freq', default=0, type=int,
                     help='Defines the range of data to be processed, 0->Year, 1->Quarter, 2->Month')
 parser.add_argument('--arch', default='rnn', type=str,
                     help='Choose one of the following models (rnn | gru)')
@@ -25,5 +25,6 @@ if __name__ == "__main__":
 
     print("Assertions complete...")
 
-    # Load data
-    load_df(args.freq)
+    # Load data and get train, val sets
+    df = load_df(args.freq)
+    df_train, df_val = get_train_eval_df(df)
