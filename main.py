@@ -78,10 +78,16 @@ if __name__ == "__main__":
     print("Length of train loader: ", len(train_loader))
     print("Length of val loader: ", len(val_loader))
 
-    all_smape = 0
-    for i in range(1):
+    all_sMape = 0
+    iteration = 1
+    for i in range(iteration):
         # Build Model
-        model = get_model(args, args.arch)
+        args.model_params = {'input_dim': args.input_size,
+                             'hidden_dim': args.hidden_size,
+                             'layer_dim': args.num_layers,
+                             'output_dim': args.output_dim,
+                             'dropout_prob': args.dropout}
+        model = get_model(args.model_params, args.arch)
 
         # Training essentials
         loss_fn = nn.MSELoss(reduction="mean")
@@ -103,11 +109,11 @@ if __name__ == "__main__":
         val_one_loader = get_val_loader(X_val, Y_val, 1, shuffle=False, drop_last=True)
         predictions, values = opt.evaluate(val_one_loader, batch_size=1, n_features=args.window_size)
         sMAPE_score = sMAPE(predictions, values)
-        all_smape += sMAPE_score
+        all_sMape += sMAPE_score
         print(i, ": sMape for validation set: ", sMAPE_score)
 
         # Saving model
         if i == 0:
             save_checkpoint(args, model)
 
-    print("Average sMape:", all_smape / 5)
+    print("Average sMape:", all_sMape / iteration)
