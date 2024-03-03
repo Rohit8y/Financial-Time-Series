@@ -1,6 +1,10 @@
 import argparse
 
+from utils.preprocessing import load_df
+
 parser = argparse.ArgumentParser(description="M3C time series forecasting")
+parser.add_argument('--freq', default=2, type=int,
+                    help='Defines the range of data to be processed, 0->Year, 1->Quarter, 2->Month')
 parser.add_argument('--arch', default='rnn', type=str,
                     help='Choose one of the following models (rnn | gru)')
 parser.add_argument('--epochs', default=100, type=int,
@@ -14,3 +18,12 @@ parser.add_argument('--weight_decay', default=1e-4, type=float,
 
 if __name__ == "__main__":
     args = parser.parse_args()
+
+    # Assertion checks
+    assert 0 <= args.freq <= 3
+    assert args.arch in ['rnn', 'gru']
+
+    print("Assertions complete...")
+
+    # Load data
+    load_df(args.freq)
