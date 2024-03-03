@@ -1,3 +1,5 @@
+import os
+
 import torch
 from torch import nn
 
@@ -66,14 +68,24 @@ class GRUModel(nn.Module):
         return out
 
 
-def get_model(args, model):
-    model_params = {'input_dim': args.input_size,
-                    'hidden_dim': args.hidden_size,
-                    'layer_dim': args.num_layers,
-                    'output_dim': args.output_dim,
-                    'dropout_prob': args.dropout}
+def get_model(model_params, arch):
     models = {
         "rnn": RNNModel,
         "gru": GRUModel,
     }
-    return models.get(model.lower())(**model_params)
+    return models.get(arch.lower())(**model_params)
+
+
+def save_checkpoint(args, model):
+    print("Saving model...")
+    states = {
+        'freq': args.freq,
+        'xScaler': args.xScaler,
+        'yScaler': args.yScaler,
+        'window_size': args.window_size,
+        'arch': args.arch,
+        'model_params': args.model_params,
+        'state_dict': model.state_dict(),
+    }
+    path_to_save = os.path.join(args.result_path, args.arch + "_model.pth")
+    torch.save(states, path_to_save)

@@ -33,6 +33,13 @@ def get_train_eval_df(df):
     return df_train, df_val
 
 
+def get_evaluation_df(df):
+    nf = df.iloc[0, 2]  # number of points ['NF'] which are meant to use for evaluation
+    for i in range(nf):
+        dfDataEvalSeries = df.iloc[len(df) - nf + i:len(df) - nf + i + 1, 6:]
+        evalSeries = df.iloc[len(df) - nf + i:len(df) - nf + i + 1, 0:1].values.tolist()[0][0]
+
+
 def generate_time_lags(df, n_lags):
     df_n = df.copy()
     for n in range(1, n_lags + 1):
@@ -74,3 +81,18 @@ def scaleData(args, X_train, X_val, Y_train, Y_val):
     Y_val = args.yScaler.transform(Y_val)
 
     return X_train, X_val, Y_train, Y_val
+
+
+def inverse_transform_visualise(scaler, df, columns):
+    for col in columns:
+        df[col] = scaler.inverse_transform(df[col])
+    return df
+
+
+def format_predictions(predictions, values, df, scaler):
+    vals = np.concatenate(values, axis=0).ravel()
+    preds = np.concatenate(predictions, axis=0).ravel()
+    df_result = pd.DataFrame(data={"value": vals, "prediction": preds}, index=df.head(len(vals)).index)
+    df_result = df_result.sort_index()
+    df_result = inverse_transform_visualise(scaler, df_result, [["value", "prediction"]])
+    return df_result
