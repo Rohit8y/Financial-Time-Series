@@ -1,3 +1,5 @@
+import os
+
 import torch
 from torch import nn
 
@@ -77,3 +79,13 @@ def get_model(args, model):
         "gru": GRUModel,
     }
     return models.get(model.lower())(**model_params)
+
+
+def save_checkpoint(args, model):
+    print("Saving model...")
+    states = {
+        'arch': args.arch,
+        'state_dict': model.state_dict(),
+    }
+    path_to_save = os.path.join(args.result_path, args.arch + "_model.pth")
+    torch.save(states, path_to_save)

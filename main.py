@@ -1,9 +1,11 @@
 import argparse
+import os
 
 from torch import nn, optim
 
-from models.arch import get_model
+from models.arch import get_model, save_checkpoint
 from utils.loader import get_train_loader, get_val_loader
+from utils.metrics import sMAPE
 from utils.opt import Optimization
 from utils.preprocessing import load_df, get_train_eval_df, generateFeatures, feature_label_split, scaleData
 
@@ -26,7 +28,8 @@ parser.add_argument('--output_dim', default=1, type=int,
                     help='The number of features in the output')
 parser.add_argument('--dropout', default=0.2, type=float,
                     help='dropout probability')
-
+parser.add_argument('--result_path', default="output", type=str,
+                    help='the path where models are saved')
 # |--------------------------------------------- Training Hyperparameters ---------------------------------------------|
 parser.add_argument('--epochs', default=100, type=int,
                     help='number of epochs to train')
@@ -45,6 +48,8 @@ if __name__ == "__main__":
     # Assertion checks
     assert 0 <= args.freq <= 3
     assert args.arch in ['rnn', 'gru']
+    if not os.path.exists(args.result_path):
+        os.makedirs(args.result_path)
 
     print("Assertions complete...")
 
@@ -73,19 +78,36 @@ if __name__ == "__main__":
     print("Length of train loader: ", len(train_loader))
     print("Length of val loader: ", len(val_loader))
 
-    # Build Model
-    model = get_model(args, args.arch)
+    all_smape = 0
+    for i in range(1):
+        # Build Model
+        model = get_model(args, args.arch)
 
-    # Training essentials
-    loss_fn = nn.MSELoss(reduction="mean")
-    optimizer = None
-    if args.optimizer == "adam":
-        optimizer = optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
-    elif args.optimizer == "sgd":
-        optimizer = optim.SGD(model.parameters(), momentum=0.9, lr=args.learning_rate, weight_decay=args.weight_decay)
+        # Training essentials
+        loss_fn = nn.MSELoss(reduction="mean")
+        optimizer = None
+        if args.optimizer == "adam":
+            optimizer = optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
+        elif args.optimizer == "sgd":
+            optimizer = optim.SGD(model.parameters(), momentum=0.9, lr=args.learning_rate,
+                                  weight_decay=args.weight_decay)
 
-    # Training block
-    opt = Optimization(model=model, loss_fn=loss_fn, optimizer=optimizer)
-    opt.train(train_loader, val_loader, batch_size=args.batch_size, n_epochs=args.epochs, n_features=args.window_size)
+        # Training
+        opt = Optimization(model=model, loss_fn=loss_fn, optimizer=optimizer)
+        opt.train(train_loader, val_loader, batch_size=args.batch_size, n_epochs=args.epochs,
+                  n_features=args.window_size)
 
-    opt.plot_losses()
+        opt.plot_losses()
+
+        # Evaluation
+        val_one_loader = get_val_loader(X_val, Y_val, 1, shuffle=False, drop_last=True)
+        predictions, values = opt.evaluate(val_one_loader, batch_size=1, n_features=args.window_size)
+        sMAPE_score = sMAPE(predictions, values)
+        all_smape += sMAPE_score
+        print(i, ": sMape for validation set: ", sMAPE_score)
+
+        # Saving model
+        if i == 0:
+            save_checkpoint(args, model)
+
+    print("Average sMape:", all_smape / 5)
