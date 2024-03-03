@@ -1,5 +1,6 @@
 import argparse
 
+from models.arch import get_model
 from utils.loader import get_train_loader, get_val_loader
 from utils.preprocessing import load_df, get_train_eval_df, generateFeatures, feature_label_split, scaleData
 
@@ -8,8 +9,21 @@ parser.add_argument('--freq', default=0, type=int,
                     help='Defines the range of data to be processed, 0->Year, 1->Quarter, 2->Month')
 parser.add_argument('--window_size', default=5, type=int,
                     help='The window size refers to the duration of observations to consider for training')
+# |------------------------------------------------ Model configuration -----------------------------------------------|
 parser.add_argument('--arch', default='rnn', type=str,
                     help='Choose one of the following models (rnn | gru)')
+parser.add_argument('--input_size', default=5, type=int,
+                    help='The number of expected features in the input x')
+parser.add_argument('--hidden_size', default=512, type=int,
+                    help='The number of features in the hidden state h')
+parser.add_argument('--num_layers', default=2, type=int,
+                    help='Number of recurrent layers. E.g., setting num_layers=2 would mean stacking two RNNs together'
+                         ' to form a stacked RNN,')
+parser.add_argument('--output_dim', default=1, type=int,
+                    help='The number of features in the output')
+parser.add_argument('--dropout', default=0.2, type=float,
+                    help='dropout probability')
+
 # |--------------------------------------------- Training Hyperparameters ---------------------------------------------|
 parser.add_argument('--epochs', default=100, type=int,
                     help='number of epochs to train')
@@ -55,3 +69,6 @@ if __name__ == "__main__":
 
     print("Length of train loader: ", len(train_loader))
     print("Length of val loader: ", len(val_loader))
+
+    # Build Model
+    model = get_model(args, args.arch)

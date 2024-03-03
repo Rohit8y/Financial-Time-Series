@@ -32,6 +32,7 @@ class RNNModel(nn.Module):
         out = self.fc(out)
         return out
 
+
 class GRUModel(nn.Module):
     def __init__(self, input_dim, hidden_dim, layer_dim, output_dim, dropout_prob):
         super(GRUModel, self).__init__()
@@ -64,3 +65,15 @@ class GRUModel(nn.Module):
 
         return out
 
+
+def get_model(args, model):
+    model_params = {'input_dim': args.input_size,
+                    'hidden_dim': args.hidden_size,
+                    'layer_dim': args.num_layers,
+                    'output_dim': args.output_dim,
+                    'dropout_prob': args.dropout}
+    models = {
+        "rnn": RNNModel,
+        "gru": GRUModel,
+    }
+    return models.get(model.lower())(**model_params)
