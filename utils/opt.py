@@ -87,5 +87,4 @@ class Optimization:
         plt.plot(self.val_losses, label="Validation loss")
         plt.legend()
         plt.title("Losses")
-        plt.show()
-        plt.close()
+        plt.savefig("loss_plot_results.png")

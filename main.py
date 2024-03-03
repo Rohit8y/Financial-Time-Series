@@ -1,7 +1,10 @@
 import argparse
 
+from torch import nn, optim
+
 from models.arch import get_model
 from utils.loader import get_train_loader, get_val_loader
+from utils.opt import Optimization
 from utils.preprocessing import load_df, get_train_eval_df, generateFeatures, feature_label_split, scaleData
 
 parser = argparse.ArgumentParser(description="M3C time series forecasting")
@@ -72,3 +75,17 @@ if __name__ == "__main__":
 
     # Build Model
     model = get_model(args, args.arch)
+
+    # Training essentials
+    loss_fn = nn.MSELoss(reduction="mean")
+    optimizer = None
+    if args.optimizer == "adam":
+        optimizer = optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
+    elif args.optimizer == "sgd":
+        optimizer = optim.SGD(model.parameters(), momentum=0.9, lr=args.learning_rate, weight_decay=args.weight_decay)
+
+    # Training block
+    opt = Optimization(model=model, loss_fn=loss_fn, optimizer=optimizer)
+    opt.train(train_loader, val_loader, batch_size=args.batch_size, n_epochs=args.epochs, n_features=args.window_size)
+
+    opt.plot_losses()
