@@ -9,4 +9,4 @@
 ---
 
 ### [**Description**](#) <a name="descr"></a>
-The M3 time series competition, organized by the International Institute of Forecasters (IIF), stands as one of the most influential and comprehensive forecasting competitions in the field of time series analysis. 
+The M3 time series competition, organized by the [International Institute of Forecasters (IIF)](https://forecasters.org/resources/time-series-data/m3-competition/), stands as one of the most influential and comprehensive forecasting competitions in the field of time series analysis. 
