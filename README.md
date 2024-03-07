@@ -4,7 +4,8 @@
 1. [Description](#descr)
 2. [Installation](#install)
 3. [Data Preparation](#prepare)
-4. [References](#ref)
+4. [Training](#train)
+5. [References](#ref)
 
 ---
 
@@ -50,5 +51,17 @@ $ pip install -r requirements.txt
 
 ---
 
-
 ### [***Data Preparation***](#) <a name="prepare"></a>
+
+The raw data from the official competition can be accessed and downloaded from the [IIF website](https://forecasters.org/data/m3comp/M3C.xls). However, as our focus is solely on the financial data, we have processed the raw data and stored it in pickle format, categorized according to the specified intervals. These pickle files are available in the [data/](https://github.com/Rohit8y/Time-Series-Forecasting/tree/main/data) folder.
+
+---
+
+### [***Training***](#) <a name="train"></a>
+
+
+
+---
+
+### [**References**](#) <a name="ref"></a>
+
