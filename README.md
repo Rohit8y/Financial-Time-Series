@@ -1,4 +1,4 @@
-### M3C finanacial time series forecasting
+### M3 Finanacial Time Series Forecasting
 
 ### [**Contents**](#)
 1. [Description](#descr)
@@ -9,3 +9,4 @@
 ---
 
 ### [**Description**](#) <a name="descr"></a>
+The M3 time series competition, organized by the International Institute of Forecasters (IIF), stands as one of the most influential and comprehensive forecasting competitions in the field of time series analysis. 
