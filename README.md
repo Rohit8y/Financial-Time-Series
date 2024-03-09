@@ -5,7 +5,8 @@
 2. [Installation](#install)
 3. [Data Preparation](#prepare)
 4. [Training](#train)
-5. [References](#ref)
+5. [Metrics](#metrics)
+6. [References](#ref)
 
 ---
 
@@ -85,7 +86,9 @@ model configuration:
   --result_path         the path where the final output models are saved (default: output)
 ```
 
-### Metrics
+---
+
+### [**Metrics**](#) <a name="metrics"></a>
 
 In line with the accuracy measures of the M3-Competition, we selected symmetric mean absolute percentage error (sMAPE) and the mean absolute percentage error (MAPE) for our metrics[[1]](#1). The sMAPE and MAPE are calculated as below, with n representing the length of the data sequence, $F_t$ the forecast at time $t$ and $A_t$ the actual value at time $t$. Both measures form an assessment of the percentage of errors:
 
