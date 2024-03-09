@@ -33,7 +33,7 @@ Due to the lack of consistency in the 'Other' interval, we opted to exclude it a
 **1.** Clone the repository:
 
 ``` shell
-git clone git@github.com:Rohit8y/Time-Series-Forecasting.git
+git clone git@github.com:Rohit8y/Financial-Time-Series.git
 cd Time-Series-Forecasting
 ```
 
