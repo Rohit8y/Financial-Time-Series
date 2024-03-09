@@ -58,8 +58,26 @@ The raw data from the official competition can be accessed and downloaded from t
 ---
 
 ### [***Training***](#) <a name="train"></a>
+We have the option to train models based on three data intervals: Yearly, Quarterly, Monthly and using two architectures: RNN, GRU. To train the model, run:
 
+```
+python main.py -h
 
+usage: main.py [-h] [--freq FREQ] [--window_size WIN_SIZE] [--arch ARCH] [--epochs EPOCHS] [--lr LR]
+               [--batch-size BS] [--wd WD] [--optimizer OPT] [--result_path RESULT]
+general options:
+  --help                show this help message and exit
+  --epochs              number of total epochs to run (default: 100)
+  --lr                  initial learning rate (default: 0.001)
+  --batch-size          mini-batch size (default: 16)
+  --wd                  weight decay (default: 1e-4)
+
+|------------------------------------------------------------------------------------------------------|
+model configuration:
+  --freq                defines the range of data to be processed (0->Year | 1->Quarter | 2->Month)
+  --window_size         the window size refers to the duration of observations to consider for training (default: 5)
+  --arch                choose one of the following model architectures (rnn | gru)
+```
 
 ---
 
