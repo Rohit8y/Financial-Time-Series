@@ -58,8 +58,7 @@ The raw data from the official competition can be accessed and downloaded from t
 ---
 
 ### [***Training***](#) <a name="train"></a>
-We have the option to train models based on three data intervals: Yearly, Quarterly, Monthly and using two architectures: RNN, GRU. To train the model, run:
-
+We can train our models using different time periods for the data: yearly, quarterly, or monthly intervals. Additionally, we have the choice of two model architectures: Recurrent Neural Networks (RNNs) or Gated Recurrent Units (GRUs). To initiate the training process, execute the following command:
 ```
 python main.py -h
 
@@ -72,11 +71,18 @@ general options:
   --batch-size          mini-batch size (default: 16)
   --wd                  weight decay (default: 1e-4)
 
-|------------------------------------------------------------------------------------------------------|
+|----------------------------------------------------------------------------------------------------------------------|
 model configuration:
   --freq                defines the range of data to be processed (0->Year | 1->Quarter | 2->Month)
   --window_size         the window size refers to the duration of observations to consider for training (default: 5)
   --arch                choose one of the following model architectures (rnn | gru)
+  --input_size          the number of expected features in the input x, should be the same as window_size (default: 5)
+  --hidden_size         the number of features in the hidden state h (default: 512)
+  --num_layers          number of recurrent layers. E.g., setting num_layers=2 would mean stacking two RNNs together to
+                        form a stacked RNN (default: 2)
+  --output_dim          the number of features in the output (default: 1)
+  --dropout             dropout probability (default: 0.2)
+  --result_path         the path where the final output models are saved (default: output)
 ```
 
 ---
