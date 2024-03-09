@@ -84,9 +84,10 @@ model configuration:
   --dropout             dropout probability (default: 0.2)
   --result_path         the path where the final output models are saved (default: output)
 ```
+
 ### Metrics
 
-In line with the accuracy measures of the M3-Competition, we selected symmetric mean absolute percentage error (sMAPE) and the mean absolute percentage error (MAPE) for our metrics[[1]](#1). The sMAPE and MAPE are calculated as below, with n representing the length of the data sequence, F_t the forecast at time t and A_t the actual value at time t. Both measures form an assessment of the percentage of errors.
+In line with the accuracy measures of the M3-Competition, we selected symmetric mean absolute percentage error (sMAPE) and the mean absolute percentage error (MAPE) for our metrics[[1]](#1). The sMAPE and MAPE are calculated as below, with n representing the length of the data sequence, $F_t$ the forecast at time $t$ and $A_t$ the actual value at time $t$. Both measures form an assessment of the percentage of errors:
 
 
 $$\text{sMAPE} = \frac{100\%}{n} \sum^{n}_{t=1} {\frac{|F(t) - A(t)|}{(|A(t)| + |F(t)|)/2}}$$
@@ -94,6 +95,8 @@ $$\text{sMAPE} = \frac{100\%}{n} \sum^{n}_{t=1} {\frac{|F(t) - A(t)|}{(|A(t)| + 
 $$\text{MAPE} = \frac{100\%}{n} \sum^{n}_{t=1} \left| {\frac{A(t) - F(t)}{A(t)}} \right|$$
 
 These measures are biased towards larger values, meaning that if $A_t > F_t$ by a given distance d, it yields a more promising MAPE than if $F_t > A_t$ by the same distance d.
+
+---
 
 ### [**References**](#) <a name="ref"></a>
 
