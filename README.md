@@ -33,8 +33,8 @@ Due to the lack of consistency in the 'Other' interval, we opted to exclude it a
 **1.** Clone the repository:
 
 ``` shell
-git clone git@github.com:Rohit8y/Financial-Time-Series.git
-cd Financial-Time-Series
+$ git clone git@github.com:Rohit8y/Financial-Time-Series.git
+$ cd Financial-Time-Series
 ```
 
 **2.** Create a new Python environment and activate it:
