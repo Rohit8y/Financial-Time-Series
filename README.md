@@ -1,4 +1,4 @@
-### M3 Finanacial Time Series Forecasting
+### M3 Financial Time Series Forecasting
 
 ### [**Contents**](#)
 1. [Description](#descr)
